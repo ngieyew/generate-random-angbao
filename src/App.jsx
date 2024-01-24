@@ -4,8 +4,13 @@ import angbaoImageM from "./assets/angpow_m.png";
 import angbaoImageL from "./assets/angpow_l.png";
 import { useCallback, useEffect, useState, useMemo } from "react";
 
+import Modal from "react-modal"; // replace with the path to your angbao image
+
 function App() {
   const [angbaoArray, setAngbaoArray] = useState([]);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const angbaoSetting = useMemo(
     () => [
       { image: angbaoImageL, speed: { minimum: 1, maximum: 2 }, width: "80px" },
@@ -37,6 +42,10 @@ function App() {
   }, [angbaoSetting]);
 
   useEffect(() => {
+    Modal.setAppElement("#root"); // replace '#root' with the id of your app's root element
+  }, []);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       setAngbaoArray((prevAngbaos) => {
         return [...prevAngbaos, generateRandomAngbao()];
@@ -52,6 +61,14 @@ function App() {
     );
   };
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
     <div>
       {angbaoArray.map((angbao) => (
@@ -62,8 +79,18 @@ function App() {
           left={angbao.left}
           width={angbao.width}
           onEnd={() => filterAngbao(angbao.id)} // Remove angbao from array when animation ends
+          openModal={openModal}
         />
       ))}
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Angbao Modal"
+      >
+        <h2>You've clicked an angbao!</h2>
+        <button onClick={closeModal}>Close</button>
+      </Modal>
     </div>
   );
 }

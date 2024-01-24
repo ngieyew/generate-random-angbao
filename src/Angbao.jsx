@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import Modal from "react-modal"; // replace with the path to your angbao image
 
 const Angbao = React.memo(function Angbao({
   image,
@@ -8,28 +7,15 @@ const Angbao = React.memo(function Angbao({
   left,
   width,
   onEnd,
+  openModal,
 }) {
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
-
-  useEffect(() => {
-    Modal.setAppElement("#root"); // replace '#root' with the id of your app's root element
-  }, []);
-
-  const handleClick = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
   return (
     <div>
       <img
         onAnimationEnd={onEnd}
         src={image}
         alt="Angbao"
-        onClick={handleClick}
+        onClick={openModal}
         style={{
           position: "absolute",
           top: 0,
@@ -40,14 +26,7 @@ const Angbao = React.memo(function Angbao({
           height: "auto", // adjust the height as needed
         }}
       />
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Angbao Modal"
-      >
-        <h2>You've clicked an angbao!</h2>
-        <button onClick={closeModal}>Close</button>
-      </Modal>
+
       <style>{`
        @keyframes fall {
         0% { transform: translateY(-100%); }
@@ -65,6 +44,7 @@ Angbao.propTypes = {
   left: PropTypes.number.isRequired,
   width: PropTypes.string.isRequired,
   onEnd: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 export default Angbao;
