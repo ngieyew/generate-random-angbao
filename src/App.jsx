@@ -9,34 +9,23 @@ function App() {
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const angpowSettings = [
-    { image: angpowImageL, speed: { min: 2, max: 4 }, width: "80px" },
-    { image: angpowImageM, speed: { min: 5, max: 8 }, width: "60px" },
-    { image: angpowImageS, speed: { min: 9, max: 11 }, width: "50px" },
+    { image: angpowImageL, speed: { minimum: 15, maximum: 18 }, width: "80px" },
+    { image: angpowImageM, speed: { minimum: 19, maximum: 22 }, width: "60px" },
+    { image: angpowImageS, speed: { minimum: 23, maximum: 27 }, width: "50px" },
   ];
 
   const generateAngpows = () => {
-    const angpowPer100px = 1; // Adjust this value to change the density of angpows
-    const numAngpows = Math.floor(window.innerWidth / 100) * angpowPer100px;
-
+    const angpowPerPx = 1; // Adjust this value to change the density of angpows
+    const numAngpows = Math.floor(window.innerWidth / 35) * angpowPerPx;
+    
     const newAngpows = Array.from({ length: numAngpows }, (_, i) => {
-      const setting =
-        angpowSettings[Math.floor(Math.random() * angpowSettings.length)];
-      const left =
-        Math.random() * (window.innerWidth - parseInt(setting.width, 10));
-      const speed =
-        Math.random() * (setting.speed.max - setting.speed.min) +
-        setting.speed.min;
-      const delay = isFirstLoad ? 0 : Math.random() * 5;
-      return {
-        id: i,
-        left,
-        delay,
-        speed,
-        image: setting.image,
-        width: setting.width,
-      };
+      const setting = angpowSettings[Math.floor(Math.random() * angpowSettings.length)];
+      const left = Math.random() * (window.innerWidth - parseInt(setting.width, 10));
+      const speed = Math.random() * (setting.speed.maximum - setting.speed.minimum) + setting.speed.minimum;
+      const delay = isFirstLoad ? i * 0.5 : Math.random() * 5; // Delay each angpow by 0.5s on first load
+      return { id: i, left, delay, speed, image: setting.image, width: setting.width };
     });
-
+    
     setAngpows(newAngpows);
     setIsFirstLoad(false);
   };

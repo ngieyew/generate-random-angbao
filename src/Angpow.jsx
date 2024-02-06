@@ -2,10 +2,11 @@ import PropTypes from "prop-types";
 
 function AngPow({ image, speed, left, width, delay }) {
   const style = {
-    backgroundImage: `url(${image})`,
-    animation: `drop ${speed}s linear infinite, appear ${delay}s linear forwards`,
+    animation: `drop ${speed}s linear ${delay}s infinite`,
+    animationDelay: `${delay}s`,
     left: `${left}px`,
     width,
+    visibility: "hidden", // Set visibility to hidden initially
   };
 
   return (
@@ -16,25 +17,20 @@ function AngPow({ image, speed, left, width, delay }) {
           position: absolute;
           top: 0;
           background-size: cover;
+          animation: drop linear infinite;
         }
+        
       
         @keyframes drop {
-          from {
+          0% {
             transform: translateY(-100%);
+            visibility: visible; // Change visibility to visible at the start of the animation
           }
           to {
             transform: translateY(100vh);
           }
         }
         
-        @keyframes appear {
-          0% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
       `}</style>
     </div>
   );
